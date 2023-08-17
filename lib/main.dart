@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'config/theme.dart';
-import 'screens/home_screen.dart';
+import 'screens/tab_screen.dart';
 
 void main() {
   runApp(const App());
@@ -16,7 +16,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (ctx) => const HomeScreen(),
+        '/': (ctx) => const TabScreen(),
       },
       theme: AppTheme.theme
     );
