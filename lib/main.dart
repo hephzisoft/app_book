@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'config/theme.dart';
+import 'models/providers/book_providers.dart';
 import 'screens/tab_screen.dart';
 
 void main() {
@@ -12,14 +14,16 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/',
-      routes: {
-        '/': (ctx) => const TabScreen(),
-      },
-      theme: AppTheme.theme
+    return ChangeNotifierProvider(
+      create: (ctx) => BookProvider(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialRoute: '/',
+        routes: {
+          '/': (ctx) => const TabScreen(),
+        },
+        theme: AppTheme.theme,
+      ),
     );
   }
 }
-

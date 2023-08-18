@@ -5,13 +5,17 @@ class Books {
   final bool isPaid;
   final String content;
   final String synposis;
+  final String imageUrl;
 
-  Books({
+  const Books({
     required this.id,
     required this.title,
     required this.author,
     required this.isPaid,
     required this.content,
     required this.synposis,
+    required this.imageUrl,
   });
+
+
 }

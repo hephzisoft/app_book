@@ -4,7 +4,7 @@ import 'package:iconly/iconly.dart';
 import '../config/colors.dart';
 import 'home_screen.dart';
 import 'paid_books.dart';
-import 'search_screen.dart';
+
 
 class TabScreen extends StatefulWidget {
   const TabScreen({super.key});
@@ -19,7 +19,6 @@ class _TabScreenState extends State<TabScreen> {
   void initState() {
     _pages = [
       const HomeScreen(),
-      const SearchScreen(),
       const PaidBooks()
     ];
     super.initState();
@@ -43,7 +42,6 @@ class _TabScreenState extends State<TabScreen> {
         onTap: changeTab,
         items: const [
           BottomNavigationBarItem(icon: Icon(IconlyBold.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(IconlyLight.search), label: ''),
           BottomNavigationBarItem(icon: Icon(IconlyBold.wallet), label: ''),
         ],
       ),
