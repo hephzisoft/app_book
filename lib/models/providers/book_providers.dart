@@ -107,6 +107,12 @@ class BookProvider extends ChangeNotifier{
    }
 
 
+   Books  bookDetails(String id){
+     return _allBooks.firstWhere((books){
+       return books.id==id;
+     });
+   }
+
   // Future<void> getBooks() async{
   //   return ;
   // }

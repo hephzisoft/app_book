@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'config/theme.dart';
 import 'models/providers/book_providers.dart';
+import 'screens/book_details_screen.dart';
 import 'screens/tab_screen.dart';
 
 void main() {
@@ -21,6 +22,7 @@ class App extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (ctx) => const TabScreen(),
+          BookDetailsScreen.routeName: (ctx) => const BookDetailsScreen(),
         },
         theme: AppTheme.theme,
       ),
