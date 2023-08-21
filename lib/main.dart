@@ -7,6 +7,7 @@ import 'screens/book_details_screen.dart';
 import 'screens/tab_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const App());
 }
 

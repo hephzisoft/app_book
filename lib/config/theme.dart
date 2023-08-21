@@ -8,6 +8,10 @@ class AppTheme {
     primaryColor: primaryColor,
     textTheme: TextTheme(
       titleMedium: GoogleFonts.poppins(
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+      ),
+      titleSmall: GoogleFonts.poppins(
         fontSize: 20,
         fontWeight: FontWeight.bold,
       ),
