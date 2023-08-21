@@ -70,19 +70,28 @@ class BookDetailsScreen extends StatelessWidget {
               ],
             ),
           ),
+          SizedBox(
+            height: constraints.maxHeight * 0.05,
+          ),
           Container(
-            height: constraints.maxHeight * 0.15,
-            child: OutlinedButton(
-              onPressed: () async {
-                // Open the Flutter documentation in the user's default web browser.
-                final url = Uri.parse("https://flutter.dev/docs/");
-                if (await canLaunchUrl(url)) {
-                  await launchUrl(url);
-                } else {
-                    log('error');
-                }
-              },
-              child: const Text("Read More"),
+            height: constraints.maxHeight * 0.1,
+            width: double.infinity,
+            child: Center(
+              child: Row(
+                children: [
+                  Text(bookDetails.isPaid ? 'Paid Book' : 'Free Book'),
+                  FilledButton(
+                    onPressed: () async {
+                      final Uri _url = Uri.parse(bookDetails.content);
+                      if (!await launchUrl(_url)) {
+                        throw Exception('Could not launch $_url');
+                      }
+                    },
+                    style: OutlinedButton.styleFrom(),
+                    child: const Text("Read More"),
+                  ),
+                ],
+              ),
             ),
           ),
         ]);

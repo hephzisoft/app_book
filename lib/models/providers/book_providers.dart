@@ -7,9 +7,8 @@ import 'package:uuid/uuid.dart';
 import '../books.dart';
 
 class BookProvider extends ChangeNotifier {
-  var uuid = const Uuid();
-
   List<Books> _allBooks = const [];
+
   List<Books> get book {
     return [..._allBooks];
   }
@@ -19,22 +18,26 @@ class BookProvider extends ChangeNotifier {
       final url = Uri.parse(
           'https://appbook-1e0d2-default-rtdb.firebaseio.com/books.json');
       final response = await http.get(url);
-      final extractedData = json.decode(response.body) as List<dynamic>;
+      final extractedData = json.decode(response.body);
+
       final List<Books> loadedBooks = [];
+
+
       for (var book in extractedData) {
+        var uuid = const Uuid().v4();
         loadedBooks.add(Books(
-            id: uuid.v4(),
+            id: uuid,
             title: book['title'],
             author: book['author'],
             isPaid: book['isPaid'],
-            content: book['content'],
+            content: book['link'],
             synopsis: book['synopsis'],
             imageUrl: book['imageUrl']));
       }
 
       _allBooks = loadedBooks;
     } catch (error) {
-      rethrow;
+
     }
   }
 
