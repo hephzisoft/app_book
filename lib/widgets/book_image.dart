@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import '../screens/book_details_screen.dart';
 
 class BookImage extends StatelessWidget {
-  const BookImage({super.key, required this.url, required this.id,});
+  const BookImage({
+    super.key,
+    required this.url,
+    required this.id,
+  });
   final String url;
   final String id;
 
@@ -13,7 +17,8 @@ class BookImage extends StatelessWidget {
       width: double.infinity,
       child: InkWell(
         onTap: () {
-          Navigator.of(context).pushNamed(BookDetailsScreen.routeName, arguments: id);
+          Navigator.of(context)
+              .pushNamed(BookDetailsScreen.routeName, arguments: id);
         },
         child: Image.network(
           url,

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -15,9 +13,10 @@ class BookDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final id = ModalRoute.of(context)?.settings.arguments;
+    final id = ModalRoute.of(context)?.settings.arguments as String;
     final bookDetails =
-        Provider.of<BookProvider>(context).bookDetails(id.toString());
+    Provider.of<BookProvider>(context, listen: false).findById(id);
+
     return Scaffold(
       body: LayoutBuilder(builder: (ctx, constraints) {
         return Column(children: [
@@ -61,6 +60,7 @@ class BookDetailsScreen extends StatelessWidget {
                 ),
                 Text(
                   bookDetails.synopsis,
+                  textAlign: TextAlign.center,
                   softWrap: true,
                   style: GoogleFonts.lora(
                     fontSize: 18,
@@ -74,21 +74,32 @@ class BookDetailsScreen extends StatelessWidget {
             height: constraints.maxHeight * 0.05,
           ),
           Container(
+            padding:
+                const EdgeInsets.only(left: 20, top: 10, bottom: 10, right: 20),
             height: constraints.maxHeight * 0.1,
             width: double.infinity,
             child: Center(
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text(bookDetails.isPaid ? 'Paid Book' : 'Free Book'),
-                  FilledButton(
-                    onPressed: () async {
-                      final Uri _url = Uri.parse(bookDetails.content);
-                      if (!await launchUrl(_url)) {
-                        throw Exception('Could not launch $_url');
-                      }
-                    },
-                    style: OutlinedButton.styleFrom(),
-                    child: const Text("Read More"),
+                  Text(
+                    bookDetails.isPaid ? 'Paid Book' : 'Free Book',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: FilledButton(
+                      onPressed: () async {
+                        final Uri url = Uri.parse(bookDetails.content);
+                        if (!await launchUrl(url)) {
+                          throw Exception('Could not launch $url');
+                        }
+                      },
+                      style: OutlinedButton.styleFrom(),
+                      child: const Text("Read More"),
+                    ),
                   ),
                 ],
               ),

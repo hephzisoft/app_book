@@ -22,7 +22,6 @@ class BookProvider extends ChangeNotifier {
 
       final List<Books> loadedBooks = [];
 
-
       for (var book in extractedData) {
         var uuid = const Uuid().v4();
         loadedBooks.add(Books(
@@ -36,9 +35,11 @@ class BookProvider extends ChangeNotifier {
       }
 
       _allBooks = loadedBooks;
-    } catch (error) {
+    } catch (error) {}
+  }
 
-    }
+  Books findById(String id) {
+    return _allBooks.firstWhere((book) => book.id == id);
   }
 
   List<Books> get showFreeBooks {
@@ -49,13 +50,5 @@ class BookProvider extends ChangeNotifier {
     return _allBooks.where((book) => book.isPaid == true).toList();
   }
 
-  Books bookDetails(String id) {
-    return _allBooks.firstWhere((books) {
-      return books.id == id;
-    });
-  }
 
-  // Future<void> getBooks() async{
-  //   return ;
-  // }
 }

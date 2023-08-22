@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:provider/provider.dart';
 
 import '../config/colors.dart';
-import 'home_screen.dart';
-import 'paid_books.dart';
-
+import '../models/books.dart';
+import '../models/providers/book_providers.dart';
+import 'free_books_screen.dart';
+import 'paid_books_screen.dart';
 
 class TabScreen extends StatefulWidget {
   const TabScreen({super.key});
@@ -14,13 +16,12 @@ class TabScreen extends StatefulWidget {
 }
 
 class _TabScreenState extends State<TabScreen> {
-   List<Widget>? _pages;
+  List<Widget>? _pages;
+
   @override
   void initState() {
-    _pages = [
-      const HomeScreen(),
-      const PaidBooks()
-    ];
+    _pages = [const FreeBooks(), const PaidBooks()];
+
     super.initState();
   }
 
@@ -36,7 +37,6 @@ class _TabScreenState extends State<TabScreen> {
     return Scaffold(
       body: _pages![currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-
         selectedItemColor: primaryColor,
         currentIndex: currentIndex,
         onTap: changeTab,
