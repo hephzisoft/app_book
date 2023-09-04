@@ -19,11 +19,13 @@ class App extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (ctx) => BookProvider(),
       child: MaterialApp(
+        themeMode: ThemeMode.system,
         debugShowCheckedModeBanner: false,
         initialRoute: '/',
+
         routes: {
           '/': (ctx) => const TabScreen(),
-          BookDetailsScreen.routeName: (ctx) =>  const BookDetailsScreen(),
+          BookDetailsScreen.routeName: (ctx) => const BookDetailsScreen(),
         },
         theme: AppTheme.theme,
       ),
