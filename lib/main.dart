@@ -26,6 +26,7 @@ class App extends StatelessWidget {
         routes: {
           '/': (ctx) => const TabScreen(),
           BookDetailsScreen.routeName: (ctx) => const BookDetailsScreen(),
+
         },
         theme: AppTheme.theme,
       ),

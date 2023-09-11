@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -13,6 +10,22 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: Column(
+        children: [
+          Container(),
+          Container(
+            decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+            )),
+            child: const Column(
+              children: [],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
