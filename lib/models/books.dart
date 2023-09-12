@@ -6,14 +6,15 @@ class Books {
   final String content;
   final String synopsis;
   final String imageUrl;
+  bool isFavorite;
 
-  const Books({
-    required this.id,
-    required this.title,
-    required this.author,
-    required this.isPaid,
-    required this.content,
-    required this.synopsis,
-    required this.imageUrl,
-  });
+   Books(
+      {required this.id,
+      required this.title,
+      required this.author,
+      required this.isPaid,
+      required this.content,
+      required this.synopsis,
+      required this.imageUrl,
+      this.isFavorite = false});
 }

@@ -1,13 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'config/theme.dart';
+import 'firebase_options.dart';
 import 'models/providers/book_providers.dart';
 import 'screens/book_details_screen.dart';
+import 'screens/splash_screen.dart';
 import 'screens/tab_screen.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const App());
 }
 
@@ -22,11 +26,9 @@ class App extends StatelessWidget {
         themeMode: ThemeMode.system,
         debugShowCheckedModeBanner: false,
         initialRoute: '/',
-
         routes: {
-          '/': (ctx) => const TabScreen(),
+          '/': (ctx) => const SplashScreen(),
           BookDetailsScreen.routeName: (ctx) => const BookDetailsScreen(),
-
         },
         theme: AppTheme.theme,
       ),

@@ -17,11 +17,19 @@ class _LoginScreenState extends State<LoginScreen> {
           Container(
             decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10),
-              topRight: Radius.circular(10),
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
             )),
-            child: const Column(
-              children: [],
+            child:  Column(
+              children: [
+                Form(child: Column(
+                  children: [
+                    TextFormField(),
+                    TextFormField(),
+
+                  ],
+                ))
+              ],
             ),
           ),
         ],

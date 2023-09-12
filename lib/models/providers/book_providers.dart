@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 // import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -35,7 +36,9 @@ class BookProvider extends ChangeNotifier {
       }
 
       _allBooks = loadedBooks;
-    } catch (error) {}
+    } catch (error) {
+      log(error.toString());
+    }
   }
 
   Books findById(String id) {
