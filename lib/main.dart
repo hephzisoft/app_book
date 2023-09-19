@@ -6,6 +6,7 @@ import 'config/theme.dart';
 import 'firebase_options.dart';
 import 'models/providers/book_providers.dart';
 import 'screens/book_details_screen.dart';
+import 'screens/login_screen.dart';
 import 'screens/splash_screen.dart';
 import 'screens/tab_screen.dart';
 
@@ -29,6 +30,7 @@ class App extends StatelessWidget {
         routes: {
           '/': (ctx) => const SplashScreen(),
           BookDetailsScreen.routeName: (ctx) => const BookDetailsScreen(),
+          LoginScreen.routeName: (ctx) => const LoginScreen(),
         },
         theme: AppTheme.theme,
       ),

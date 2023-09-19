@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../config/colors.dart';
 import '../config/typography.dart';
+import 'login_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -49,11 +50,16 @@ class SplashScreen extends StatelessWidget {
                           style: paragraph,
                         ),
                         const SizedBox(
-                          height: 10,
+                          height: 40,
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: botton_color,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)
+
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 16,horizontal: 25)
                           ),
                           onPressed: () {},
                           child: Text(
@@ -65,7 +71,9 @@ class SplashScreen extends StatelessWidget {
                           height: 10,
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+                          },
                           child: Text(
                             'Sign In',
                             style: secondaryLabel,
