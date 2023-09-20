@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
-import 'package:provider/provider.dart';
 
 import '../config/colors.dart';
-import '../models/books.dart';
-import '../models/providers/book_providers.dart';
+
 import 'free_books_screen.dart';
 import 'paid_books_screen.dart';
 

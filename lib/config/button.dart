@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'typography.dart';
 
-
 final ButtonStyle buttonPrimary = ElevatedButton.styleFrom(
   minimumSize: const Size(283, 50),
-  primary: Colors.blue,
+  backgroundColor: Colors.blue,
   elevation: 0,
   shape: const RoundedRectangleBorder(
     borderRadius: BorderRadius.all(

@@ -20,7 +20,6 @@ class TextFormDesign extends StatelessWidget {
       child: TextFormField(
         decoration: const InputDecoration(
           contentPadding: EdgeInsets.only(left: 20, top: 15),
-          hintText: 'hintText',
           border: InputBorder.none,
         ),
       ),

@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
-import 'colors.dart';
+// import 'colors.dart';
 
 TextStyle headerOne = GoogleFonts.poppins(
   fontSize: 22,
   fontWeight: FontWeight.w500,
-);TextStyle headerTwo = GoogleFonts.poppins(
+);
+TextStyle headerTwo = GoogleFonts.poppins(
   fontSize: 18,
   fontWeight: FontWeight.w500,
 );
