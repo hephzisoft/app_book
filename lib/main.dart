@@ -8,7 +8,7 @@ import 'models/providers/book_providers.dart';
 import 'screens/book_details_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/splash_screen.dart';
-import 'screens/tab_screen.dart';
+// import 'screens/tab_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

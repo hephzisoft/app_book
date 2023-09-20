@@ -10,7 +10,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: background_color,
+      backgroundColor: primaryColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -28,9 +28,9 @@ class SplashScreen extends StatelessWidget {
                 child: Container(
                   height: 294,
                   width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: white,
-                    borderRadius: const BorderRadius.all(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
                       Radius.circular(50),
                     ),
                   ),
@@ -40,7 +40,7 @@ class SplashScreen extends StatelessWidget {
                       children: [
                         Text(
                           'Learn On Your Own',
-                          style: headerOne,
+                          style: headerTwo,
                         ),
                         const SizedBox(
                           height: 6,
@@ -54,7 +54,7 @@ class SplashScreen extends StatelessWidget {
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: botton_color,
+                            backgroundColor: primaryColor,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20)
 
@@ -71,12 +71,15 @@ class SplashScreen extends StatelessWidget {
                           height: 10,
                         ),
                         TextButton(
+
                           onPressed: () {
                             Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
                           },
                           child: Text(
                             'Sign In',
-                            style: secondaryLabel,
+                            style: secondaryLabel.copyWith(
+                              fontWeight: FontWeight.bold
+                            ),
                           ),
                         ),
                       ],
