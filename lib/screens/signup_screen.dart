@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../config/colors.dart';
 import '../config/typography.dart';
-import '../widgets/text_form_design.dart';
 import 'login_screen.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -86,6 +85,11 @@ class _SignupScreenState extends State<SignupScreen> {
                                       EdgeInsets.only(left: 20, top: 15),
                                   border: InputBorder.none,
                                 ),
+                                onSaved: (value) {
+                                  setState(() {
+                                    _authData['username'] = value!;
+                                  });
+                                },
                               ),
                             ),
                             Text(

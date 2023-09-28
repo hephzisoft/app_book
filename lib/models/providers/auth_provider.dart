@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart' as auth;
 
 import '../user.dart';
 
-class AuthProviser {
+class AuthProvider {
   final _firebaseAuth = auth.FirebaseAuth.instance;
 
   User? _userFromFirebase(auth.User? user) {

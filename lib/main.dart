@@ -2,13 +2,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'auth_check.dart';
 import 'config/theme.dart';
 import 'firebase_options.dart';
+import 'models/providers/auth_provider.dart';
 import 'models/providers/book_providers.dart';
 import 'screens/book_details_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/signup_screen.dart';
-import 'screens/splash_screen.dart';
+import 'screens/tab_screen.dart';
+// import 'screens/splash_screen.dart';
 // import 'screens/tab_screen.dart';
 
 void main() async {
@@ -22,20 +25,26 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (ctx) => BookProvider(),
-      child: MaterialApp(
-        themeMode: ThemeMode.system,
-        debugShowCheckedModeBanner: false,
-        initialRoute: '/',
-        routes: {
-          '/': (ctx) => const SplashScreen(),
-          BookDetailsScreen.routeName: (ctx) => const BookDetailsScreen(),
-          LoginScreen.routeName: (ctx) => const LoginScreen(),
-          SignupScreen.routeName: (ctx) => const SignupScreen(),
-        },
-        theme: AppTheme.theme,
-      ),
-    );
+    return MultiProvider(
+        providers: [
+          Provider<AuthProvider>(
+            create: (context) => AuthProvider(),
+          ),
+          ChangeNotifierProvider<BookProvider>(
+            create: (context) => BookProvider(),
+          ),
+        ],
+        child: MaterialApp(
+          themeMode: ThemeMode.system,
+          debugShowCheckedModeBanner: false,
+          routes: {
+            '/': (ctx) => const AuthCheck(),
+            TabScreen.routeName: (ctx) => const TabScreen(),
+            BookDetailsScreen.routeName: (ctx) => const BookDetailsScreen(),
+            LoginScreen.routeName: (ctx) => const LoginScreen(),
+            SignupScreen.routeName: (ctx) => const SignupScreen(),
+          },
+          theme: AppTheme.theme,
+        ));
   }
 }

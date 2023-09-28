@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../config/colors.dart';
 import '../config/typography.dart';
-import '../widgets/text_form_design.dart';
 import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -77,6 +76,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 borderRadius: BorderRadius.circular(20),
                                 color: whiteSoft,
                               ),
+
+                              // email text field
                               child: TextFormField(
                                 decoration: const InputDecoration(
                                   contentPadding:
@@ -101,6 +102,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 borderRadius: BorderRadius.circular(20),
                                 color: whiteSoft,
                               ),
+
+                              // password text field
+
                               child: TextFormField(
                                 decoration: const InputDecoration(
                                   contentPadding:

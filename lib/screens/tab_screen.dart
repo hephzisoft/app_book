@@ -8,7 +8,7 @@ import 'paid_books_screen.dart';
 
 class TabScreen extends StatefulWidget {
   const TabScreen({super.key});
-
+  static const routeName = '/tab';
   @override
   State<TabScreen> createState() => _TabScreenState();
 }
