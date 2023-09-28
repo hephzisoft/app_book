@@ -69,7 +69,22 @@ class _LoginScreenState extends State<LoginScreen> {
                             const SizedBox(
                               height: 10,
                             ),
-                            const TextFormDesign(),
+                            Container(
+                              // width: 300,
+                              height: 70,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: whiteSoft, width: 2),
+                                borderRadius: BorderRadius.circular(20),
+                                color: whiteSoft,
+                              ),
+                              child: TextFormField(
+                                decoration: const InputDecoration(
+                                  contentPadding:
+                                      EdgeInsets.only(left: 20, top: 15),
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            ),
                             const SizedBox(height: 20),
                             Text(
                               'Password',
@@ -78,7 +93,22 @@ class _LoginScreenState extends State<LoginScreen> {
                             const SizedBox(
                               height: 10,
                             ),
-                            const TextFormDesign(),
+                            Container(
+                              // width: 300,
+                              height: 70,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: whiteSoft, width: 2),
+                                borderRadius: BorderRadius.circular(20),
+                                color: whiteSoft,
+                              ),
+                              child: TextFormField(
+                                decoration: const InputDecoration(
+                                  contentPadding:
+                                      EdgeInsets.only(left: 20, top: 15),
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            ),
                             Container(
                               margin: const EdgeInsets.only(bottom: 30),
                               alignment: Alignment.centerRight,

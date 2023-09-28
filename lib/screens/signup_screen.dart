@@ -14,6 +14,7 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  final _authData = {'email': '', 'password': '', 'username': ''};
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,13 +64,30 @@ class _SignupScreenState extends State<SignupScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Name',
+                              'Username',
                               style: headerOne,
                             ),
                             const SizedBox(
                               height: 10,
                             ),
-                            const TextFormDesign(),
+                            Container(
+                              // width: 300,
+                              height: 70,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: whiteSoft, width: 2),
+                                borderRadius: BorderRadius.circular(20),
+                                color: whiteSoft,
+                              ),
+
+                              // Username
+                              child: TextFormField(
+                                decoration: const InputDecoration(
+                                  contentPadding:
+                                      EdgeInsets.only(left: 20, top: 15),
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            ),
                             Text(
                               'Email',
                               style: headerOne,
@@ -77,7 +95,29 @@ class _SignupScreenState extends State<SignupScreen> {
                             const SizedBox(
                               height: 10,
                             ),
-                            const TextFormDesign(),
+                            Container(
+                              // width: 300,
+                              height: 70,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: whiteSoft, width: 2),
+                                borderRadius: BorderRadius.circular(20),
+                                color: whiteSoft,
+                              ),
+
+                              // Email input field
+                              child: TextFormField(
+                                decoration: const InputDecoration(
+                                  contentPadding:
+                                      EdgeInsets.only(left: 20, top: 15),
+                                  border: InputBorder.none,
+                                ),
+                                onSaved: (value) {
+                                  setState(() {
+                                    _authData['email'] = value!;
+                                  });
+                                },
+                              ),
+                            ),
                             const SizedBox(height: 20),
                             Text(
                               'Password',
@@ -86,7 +126,30 @@ class _SignupScreenState extends State<SignupScreen> {
                             const SizedBox(
                               height: 10,
                             ),
-                            const TextFormDesign(),
+                            Container(
+                              // width: 300,
+                              height: 70,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: whiteSoft, width: 2),
+                                borderRadius: BorderRadius.circular(20),
+                                color: whiteSoft,
+                              ),
+
+                              // Password input field
+                              child: TextFormField(
+                                decoration: const InputDecoration(
+                                  // hintText: 'Password',
+                                  contentPadding:
+                                      EdgeInsets.only(left: 20, top: 15),
+                                  border: InputBorder.none,
+                                ),
+                                onSaved: (value) {
+                                  setState(() {
+                                    _authData['password'] = value!;
+                                  });
+                                },
+                              ),
+                            ),
                             Container(
                               margin: const EdgeInsets.only(top: 40),
                               width: double.infinity,

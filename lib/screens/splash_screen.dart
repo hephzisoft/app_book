@@ -38,6 +38,9 @@ class SplashScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 34),
                     child: Column(
                       children: [
+                        const SizedBox(
+                          height: 50,
+                        ),
                         Text(
                           'Learn On Your Own',
                           style: headerTwo,
@@ -50,36 +53,22 @@ class SplashScreen extends StatelessWidget {
                           style: paragraph,
                         ),
                         const SizedBox(
-                          height: 40,
+                          height: 50,
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: primaryColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)
-
-                            ),
-                            padding: const EdgeInsets.symmetric(vertical: 16,horizontal: 25)
-                          ),
-                          onPressed: () {},
+                              backgroundColor: primaryColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 16, horizontal: 25)),
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed(LoginScreen.routeName);
+                          },
                           child: Text(
                             'Get Started',
                             style: primaryLabel,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        TextButton(
-
-                          onPressed: () {
-                            Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
-                          },
-                          child: Text(
-                            'Sign In',
-                            style: secondaryLabel.copyWith(
-                              fontWeight: FontWeight.bold
-                            ),
                           ),
                         ),
                       ],
