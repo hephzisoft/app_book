@@ -6,6 +6,7 @@ import '../config/colors.dart';
 
 import '../models/providers/auth_provider.dart';
 import 'free_books_screen.dart';
+import 'login_screen.dart';
 import 'paid_books_screen.dart';
 
 class TabScreen extends StatefulWidget {
@@ -42,9 +43,8 @@ class _TabScreenState extends State<TabScreen> {
           IconButton(
             icon: const Icon(Icons.exit_to_app),
             onPressed: () async {
-              await Provider.of<AuthProvider>(context)
-                  .signOut()
-                  .then((value) => Navigator.of(context).pushNamed('/'));
+              await Provider.of<AuthProvider>(context).signOut().then((value) =>
+                  Navigator.of(context).pushNamed(LoginScreen.routeName));
             },
           )
         ],
