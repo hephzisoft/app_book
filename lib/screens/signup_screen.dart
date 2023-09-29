@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../config/colors.dart';
 import '../config/typography.dart';
+import '../models/providers/auth_provider.dart';
 import 'login_screen.dart';
+import 'tab_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -14,6 +17,43 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   final _authData = {'email': '', 'password': '', 'username': ''};
+  final _formKey = GlobalKey<FormState>(); // This is for validating
+  void register() async {
+    bool haveError = false;
+    final isValid = _formKey.currentState!.validate();
+    if (!isValid) {
+      return;
+    }
+    _formKey.currentState!.save();
+    if (_authData['password'] == null &&
+        _authData['email'] == null &&
+        _authData['username'] == null) {
+      return;
+    }
+    await Provider.of<AuthProvider>(context, listen: false)
+        .signUp(
+      email: _authData['email']!,
+      name: _authData['username']!,
+      password: _authData['password']!,
+      showErrorSnackbar: (error) {
+        if (error.isEmpty) {
+          haveError = false;
+        } else {
+          haveError = true;
+          String errorMessage = error.replaceAll(RegExp(r'\[[^\]]*\]'), '');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(errorMessage)),
+          );
+        }
+      },
+    )
+        .then((_) {
+      if (!haveError) {
+        Navigator.of(context).pushReplacementNamed(TabScreen.routeName);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,6 +97,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       ],
                     ),
                     Form(
+                      key: _formKey,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
@@ -85,10 +126,16 @@ class _SignupScreenState extends State<SignupScreen> {
                                       EdgeInsets.only(left: 20, top: 15),
                                   border: InputBorder.none,
                                 ),
+                                validator: (value) {
+                                  if (value!.isNotEmpty) {
+                                    if (value.length < 3) {
+                                      return 'Are you sure that your name is this short';
+                                    }
+                                  }
+                                  return null;
+                                },
                                 onSaved: (value) {
-                                  setState(() {
-                                    _authData['username'] = value!;
-                                  });
+                                  _authData['username'] = value!;
                                 },
                               ),
                             ),
@@ -116,9 +163,18 @@ class _SignupScreenState extends State<SignupScreen> {
                                   border: InputBorder.none,
                                 ),
                                 onSaved: (value) {
-                                  setState(() {
-                                    _authData['email'] = value!;
-                                  });
+                                  _authData['email'] = value!;
+                                },
+                                keyboardType: TextInputType.emailAddress,
+                                validator: (value) {
+                                  if (value!.isNotEmpty) {
+                                    if (!value.contains('@')) {
+                                      return 'Please enter a valid email address.';
+                                    }
+                                  } else {
+                                    return 'Please enter a valid email address.';
+                                  }
+                                  return null;
                                 },
                               ),
                             ),
@@ -141,16 +197,25 @@ class _SignupScreenState extends State<SignupScreen> {
 
                               // Password input field
                               child: TextFormField(
+                                obscureText: true,
                                 decoration: const InputDecoration(
                                   // hintText: 'Password',
                                   contentPadding:
                                       EdgeInsets.only(left: 20, top: 15),
                                   border: InputBorder.none,
                                 ),
+                                validator: (value) {
+                                  if (value!.isNotEmpty) {
+                                    if (value.length < 8) {
+                                      return 'Password must be greater than 8 character';
+                                    }
+                                  } else {
+                                    return 'Please enter a password.';
+                                  }
+                                  return null;
+                                },
                                 onSaved: (value) {
-                                  setState(() {
-                                    _authData['password'] = value!;
-                                  });
+                                  _authData['password'] = value!;
                                 },
                               ),
                             ),
@@ -161,7 +226,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                 style: FilledButton.styleFrom(
                                     backgroundColor: primaryColor,
                                     textStyle: primaryLabel),
-                                onPressed: () {},
+                                onPressed: () {
+                                  register();
+                                },
                                 child: const Text('Sign up'),
                               ),
                             )

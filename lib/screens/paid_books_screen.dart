@@ -1,3 +1,5 @@
+import 'package:app_book/main.dart';
+import 'package:app_book/models/providers/auth_provider.dart';
 import 'package:app_book/widgets/book_image.dart';
 import 'package:flutter/cupertino.dart';
 // import 'package:flutter/cupertino.dart';
@@ -60,7 +62,7 @@ class _PaidBooksState extends State<PaidBooks> {
         children: [
           Container(
             padding: const EdgeInsets.all(10),
-            height: size * 0.35,
+            height: size * 0.25,
             decoration: const BoxDecoration(
               color: primaryColor,
               borderRadius: BorderRadius.only(

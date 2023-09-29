@@ -1,8 +1,12 @@
+// import 'package:app_book/models/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../config/colors.dart';
 import '../config/typography.dart';
+import '../models/providers/auth_provider.dart';
 import 'signup_screen.dart';
+import 'tab_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,6 +17,50 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _authData = {
+    'email': '',
+    'password': '',
+  };
+
+  void login() async {
+    final isValid = _formKey.currentState!.validate();
+    var haveError = false;
+    if (!isValid) {
+      return;
+    }
+
+    _formKey.currentState!.save();
+
+    if (_authData['email'] == null && _authData['password'] == null) {
+      return;
+    }
+    await Provider.of<AuthProvider>(context, listen: false)
+        .login(
+      email: _authData['email']!,
+      password: _authData['password']!,
+      showErrorSnackbar: (error) {
+        if (error.isEmpty) {
+          haveError = false;
+        }
+        // This is used for checking if error is empty then calling haveError to false.
+        else {
+          haveError = true;
+          String errorMessage = error.replaceAll(RegExp(r'\[[^\]]*\]'),
+              ''); // This is used for removing [] and its internal content.
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(errorMessage)),
+          ); // For showing the error using a snackbar.
+        }
+      },
+    )
+        .then((_) {
+      if (!haveError) {
+        Navigator.of(context).pushReplacementNamed(TabScreen.routeName);
+      }
+    }); // making sure that if there is no error then we can move to the verify_email_screen.
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,6 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                     Form(
+                      key: _formKey,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
@@ -84,6 +133,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                       EdgeInsets.only(left: 20, top: 15),
                                   border: InputBorder.none,
                                 ),
+                                keyboardType: TextInputType.emailAddress,
+                                onSaved: (value) {
+                                  _authData['email'] = value!;
+                                },
+                                validator: (value) {
+                                  if (value!.isNotEmpty) {
+                                    if (!value.contains('@')) {
+                                      return 'Please enter a valid email address.';
+                                    }
+                                  } else {
+                                    return 'Please enter a valid email address.';
+                                  }
+                                  return null;
+                                },
                               ),
                             ),
                             const SizedBox(height: 20),
@@ -106,12 +169,24 @@ class _LoginScreenState extends State<LoginScreen> {
                               // password text field
 
                               child: TextFormField(
-                                decoration: const InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.only(left: 20, top: 15),
-                                  border: InputBorder.none,
-                                ),
-                              ),
+                                  decoration: const InputDecoration(
+                                    contentPadding:
+                                        EdgeInsets.only(left: 20, top: 15),
+                                    border: InputBorder.none,
+                                  ),
+                                  onSaved: (value) {
+                                    _authData['password'] = value!;
+                                  },
+                                  validator: (value) {
+                                    if (value!.isNotEmpty) {
+                                      if (value.length < 8) {
+                                        return 'Password must be greater than 8 character';
+                                      }
+                                    } else {
+                                      return 'Please enter a password.';
+                                    }
+                                    return null;
+                                  }),
                             ),
                             Container(
                               margin: const EdgeInsets.only(bottom: 30),
@@ -133,7 +208,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 style: FilledButton.styleFrom(
                                     backgroundColor: primaryColor,
                                     textStyle: primaryLabel),
-                                onPressed: () {},
+                                onPressed: () {
+                                  login();
+                                },
                                 child: const Text('Log in'),
                               ),
                             )

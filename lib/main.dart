@@ -26,25 +26,26 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
-          Provider<AuthProvider>(
-            create: (context) => AuthProvider(),
-          ),
-          ChangeNotifierProvider<BookProvider>(
-            create: (context) => BookProvider(),
-          ),
-        ],
-        child: MaterialApp(
-          themeMode: ThemeMode.system,
-          debugShowCheckedModeBanner: false,
-          routes: {
-            '/': (ctx) => const AuthCheck(),
-            TabScreen.routeName: (ctx) => const TabScreen(),
-            BookDetailsScreen.routeName: (ctx) => const BookDetailsScreen(),
-            LoginScreen.routeName: (ctx) => const LoginScreen(),
-            SignupScreen.routeName: (ctx) => const SignupScreen(),
-          },
-          theme: AppTheme.theme,
-        ));
+      providers: [
+        Provider<AuthProvider>(
+          create: (context) => AuthProvider(),
+        ),
+        ChangeNotifierProvider<BookProvider>(
+          create: (context) => BookProvider(),
+        ),
+      ],
+      child: MaterialApp(
+        themeMode: ThemeMode.system,
+        debugShowCheckedModeBanner: false,
+        routes: {
+          '/': (ctx) => const AuthCheck(),
+          TabScreen.routeName: (ctx) => const TabScreen(),
+          BookDetailsScreen.routeName: (ctx) => const BookDetailsScreen(),
+          LoginScreen.routeName: (ctx) => const LoginScreen(),
+          SignupScreen.routeName: (ctx) => const SignupScreen(),
+        },
+        theme: AppTheme.theme,
+      ),
+    );
   }
 }

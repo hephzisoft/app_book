@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:provider/provider.dart';
 
 import '../config/colors.dart';
 
+import '../models/providers/auth_provider.dart';
 import 'free_books_screen.dart';
 import 'paid_books_screen.dart';
 
@@ -33,6 +35,20 @@ class _TabScreenState extends State<TabScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: primaryColor,
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.exit_to_app),
+            onPressed: () async {
+              await Provider.of<AuthProvider>(context)
+                  .signOut()
+                  .then((value) => Navigator.of(context).pushNamed('/'));
+            },
+          )
+        ],
+      ),
       body: _pages![currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: primaryColor,

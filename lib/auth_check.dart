@@ -4,7 +4,8 @@ import 'package:provider/provider.dart';
 
 import 'models/providers/auth_provider.dart';
 import 'models/user.dart';
-import 'screens/login_screen.dart';
+// import 'screens/login_screen.dart';
+import 'screens/splash_screen.dart';
 import 'screens/tab_screen.dart';
 
 class AuthCheck extends StatelessWidget {
@@ -19,7 +20,7 @@ class AuthCheck extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.active) {
             User? user = snapshot.data;
             if (user == null) {
-              return const LoginScreen();
+              return const SplashScreen();
             } else {
               return const TabScreen();
             }

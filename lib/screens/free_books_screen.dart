@@ -44,8 +44,10 @@ class _FreeBooksState extends State<FreeBooks> {
     final bookProvider = Provider.of<BookProvider>(context, listen: false);
     _filteredBooks = _searchQuery.isEmpty
         ? bookProvider.showFreeBooks
-        : bookProvider.showFreeBooks.where((book) =>
-        book.title.toLowerCase().contains(_searchQuery.toLowerCase())).toList();
+        : bookProvider.showFreeBooks
+            .where((book) =>
+                book.title.toLowerCase().contains(_searchQuery.toLowerCase()))
+            .toList();
   }
 
   @override
@@ -53,14 +55,13 @@ class _FreeBooksState extends State<FreeBooks> {
     final size = MediaQuery.of(context).size.height;
     _filterBooks();
 
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
               padding: const EdgeInsets.all(10),
-              height: size * 0.35,
+              height: size * 0.25,
               decoration: const BoxDecoration(
                 color: primaryColor,
                 borderRadius: BorderRadius.only(
