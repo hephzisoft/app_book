@@ -6,6 +6,7 @@ import '../config/typography.dart';
 import '../models/providers/auth_provider.dart';
 import 'login_screen.dart';
 import 'tab_screen.dart';
+import 'verify_email_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -49,7 +50,7 @@ class _SignupScreenState extends State<SignupScreen> {
     )
         .then((_) {
       if (!haveError) {
-        Navigator.of(context).pushReplacementNamed(TabScreen.routeName);
+        Navigator.of(context).pushReplacementNamed(VerifyEmailScreen.routeName);
       }
     });
   }

@@ -11,6 +11,7 @@ import 'screens/book_details_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/signup_screen.dart';
 import 'screens/tab_screen.dart';
+import 'screens/verify_email_screen.dart';
 // import 'screens/splash_screen.dart';
 // import 'screens/tab_screen.dart';
 
@@ -40,6 +41,7 @@ class App extends StatelessWidget {
         routes: {
           '/': (ctx) => const AuthCheck(),
           TabScreen.routeName: (ctx) => const TabScreen(),
+          VerifyEmailScreen.routeName: (ctx) => const VerifyEmailScreen(),
           BookDetailsScreen.routeName: (ctx) => const BookDetailsScreen(),
           LoginScreen.routeName: (ctx) => const LoginScreen(),
           SignupScreen.routeName: (ctx) => const SignupScreen(),

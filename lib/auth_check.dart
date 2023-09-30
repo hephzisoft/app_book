@@ -6,20 +6,19 @@ import 'models/providers/auth_provider.dart';
 import 'models/user.dart';
 // import 'screens/login_screen.dart';
 import 'screens/splash_screen.dart';
-import 'screens/tab_screen.dart';
 import 'screens/verify_email_screen.dart';
 
 class AuthCheck extends StatelessWidget {
   const AuthCheck({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final auth = Provider.of<AuthProvider>(context);
+   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthProvider>(context);
     return StreamBuilder(
-        stream: auth.user,
+        stream: authService.user,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
-            User? user = snapshot.data;
+            final User? user = snapshot.data;
             if (user == null) {
               return const SplashScreen();
             } else {
@@ -27,9 +26,7 @@ class AuthCheck extends StatelessWidget {
             }
           } else {
             return const Scaffold(
-              body: Center(
-                child: CupertinoActivityIndicator(),
-              ),
+              body: Center(child: CupertinoActivityIndicator()),
             );
           }
         });

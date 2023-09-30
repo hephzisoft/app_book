@@ -7,6 +7,7 @@ import '../config/typography.dart';
 import '../models/providers/auth_provider.dart';
 import 'signup_screen.dart';
 import 'tab_screen.dart';
+import 'verify_email_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -56,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
     )
         .then((_) {
       if (!haveError) {
-        Navigator.of(context).pushReplacementNamed(TabScreen.routeName);
+        Navigator.of(context).pushReplacementNamed(VerifyEmailScreen.routeName);
       }
     }); // making sure that if there is no error then we can move to the verify_email_screen.
   }
@@ -169,6 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               // password text field
 
                               child: TextFormField(
+                                  obscureText: true,
                                   decoration: const InputDecoration(
                                     contentPadding:
                                         EdgeInsets.only(left: 20, top: 15),

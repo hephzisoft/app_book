@@ -10,7 +10,11 @@ class AuthProvider {
     if (user == null) {
       return null;
     }
-    return User(uid: user.uid, email: user.email!, name: user.displayName!);
+    return User(
+      uid: user.uid,
+      email: user.email!,
+      name: user.displayName!,
+    );
   } // This is used to represent the user from firebase to the current user of our application.
 
   Stream<User?>? get user {
@@ -24,9 +28,8 @@ class AuthProvider {
       required Function(String) showErrorSnackbar}) async {
     try {
       final credential = await _firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      // final token = await credential.user!.getIdToken();
-      await credential.user!.updateDisplayName(name);
+          email: email, password: password).then((value){});
+      credential?.user!.updateDisplayName(name);
       return _userFromFirebase(credential.user);
     } catch (error) {
       showErrorSnackbar(error.toString());
