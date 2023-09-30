@@ -28,8 +28,8 @@ class AuthProvider {
       required Function(String) showErrorSnackbar}) async {
     try {
       final credential = await _firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password).then((value){});
-      credential?.user!.updateDisplayName(name);
+          email: email, password: password);
+      credential.user!.updateDisplayName(name);
       return _userFromFirebase(credential.user);
     } catch (error) {
       showErrorSnackbar(error.toString());
