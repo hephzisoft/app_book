@@ -43,8 +43,10 @@ class _TabScreenState extends State<TabScreen> {
           IconButton(
             icon: const Icon(Icons.exit_to_app),
             onPressed: () async {
-              await Provider.of<AuthProvider>(context).signOut().then((value) =>
-                  Navigator.of(context).pushNamed(LoginScreen.routeName));
+              await Provider.of<AuthProvider>(context, listen: false)
+                  .signOut()
+                  .then((value) =>
+                      Navigator.of(context).pushNamed(LoginScreen.routeName));
             },
           )
         ],

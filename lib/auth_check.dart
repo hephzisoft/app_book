@@ -7,6 +7,7 @@ import 'models/user.dart';
 // import 'screens/login_screen.dart';
 import 'screens/splash_screen.dart';
 import 'screens/tab_screen.dart';
+import 'screens/verify_email_screen.dart';
 
 class AuthCheck extends StatelessWidget {
   const AuthCheck({super.key});
@@ -22,7 +23,7 @@ class AuthCheck extends StatelessWidget {
             if (user == null) {
               return const SplashScreen();
             } else {
-              return const TabScreen();
+              return const VerifyEmailScreen();
             }
           } else {
             return const Scaffold(

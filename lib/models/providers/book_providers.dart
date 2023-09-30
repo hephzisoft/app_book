@@ -53,5 +53,5 @@ class BookProvider extends ChangeNotifier {
     return _allBooks.where((book) => book.isPaid == true).toList();
   }
 
-
+ 
 }

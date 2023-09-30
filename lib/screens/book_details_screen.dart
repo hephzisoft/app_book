@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +16,7 @@ class BookDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final id = ModalRoute.of(context)?.settings.arguments as String;
     final bookDetails =
-    Provider.of<BookProvider>(context, listen: false).findById(id);
+        Provider.of<BookProvider>(context, listen: false).findById(id);
 
     return Scaffold(
       body: LayoutBuilder(builder: (ctx, constraints) {
@@ -90,6 +91,19 @@ class BookDetailsScreen extends StatelessWidget {
                     width: 10,
                   ),
                   Expanded(
+                    child: IconButton(
+                      icon: Icon(bookDetails.isFavorite
+                          ? CupertinoIcons.heart_fill
+                          : CupertinoIcons.heart),
+                      onPressed: () {
+                     
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
                     child: FilledButton(
                       onPressed: () async {
                         final Uri url = Uri.parse(bookDetails.content);
@@ -97,7 +111,7 @@ class BookDetailsScreen extends StatelessWidget {
                           throw Exception('Could not launch $url');
                         }
                       },
-                      style: OutlinedButton.styleFrom(),
+                      // style: OutlinedButton.styleFrom(),
                       child: const Text("Read More"),
                     ),
                   ),

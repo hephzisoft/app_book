@@ -6,6 +6,7 @@ import 'colors.dart';
 class AppTheme {
   static var theme = ThemeData(
     primaryColor: primaryColor,
+    useMaterial3: true,
     textTheme: TextTheme(
       titleMedium: GoogleFonts.poppins(
         fontSize: 24,
