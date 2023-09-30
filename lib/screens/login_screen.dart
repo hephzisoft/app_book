@@ -1,4 +1,4 @@
-// import 'package:app_book/models/providers/auth_provider.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -6,7 +6,6 @@ import '../config/colors.dart';
 import '../config/typography.dart';
 import '../models/providers/auth_provider.dart';
 import 'signup_screen.dart';
-import 'tab_screen.dart';
 import 'verify_email_screen.dart';
 
 class LoginScreen extends StatefulWidget {

@@ -5,7 +5,6 @@ import '../config/colors.dart';
 import '../config/typography.dart';
 import '../models/providers/auth_provider.dart';
 import 'login_screen.dart';
-import 'tab_screen.dart';
 import 'verify_email_screen.dart';
 
 class SignupScreen extends StatefulWidget {
