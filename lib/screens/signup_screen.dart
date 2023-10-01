@@ -1,3 +1,4 @@
+import 'package:app_book/exceptions/auth_exception.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,39 +20,32 @@ class _SignupScreenState extends State<SignupScreen> {
   final _authData = {'email': '', 'password': '', 'username': ''};
   final _formKey = GlobalKey<FormState>(); // This is for validating
   void register() async {
-    bool haveError = false;
-    final isValid = _formKey.currentState!.validate();
-    if (!isValid) {
-      return;
-    }
-    _formKey.currentState!.save();
-    if (_authData['password'] == null &&
-        _authData['email'] == null &&
-        _authData['username'] == null) {
-      return;
-    }
-    await Provider.of<AuthProvider>(context, listen: false)
-        .signUp(
-      email: _authData['email']!,
-      name: _authData['username']!,
-      password: _authData['password']!,
-      showErrorSnackbar: (error) {
-        if (error.isEmpty) {
-          haveError = false;
-        } else {
-          haveError = true;
-          String errorMessage = error.replaceAll(RegExp(r'\[[^\]]*\]'), '');
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(errorMessage)),
-          );
-        }
-      },
-    )
-        .then((_) {
-      if (!haveError) {
-        Navigator.of(context).pushReplacementNamed(VerifyEmailScreen.routeName);
+    try {
+      final isValid = _formKey.currentState!.validate();
+      if (!isValid) {
+        return;
       }
-    });
+      _formKey.currentState!.save();
+      if (_authData['password'] == null &&
+          _authData['email'] == null &&
+          _authData['username'] == null) {
+        return;
+      }
+      await Provider.of<AuthProvider>(context, listen: false)
+          .signUp(
+            email: _authData['email']!,
+            name: _authData['username']!,
+            password: _authData['password']!,
+          )
+          .then((value) => Navigator.of(context)
+              .pushReplacementNamed(VerifyEmailScreen.routeName));
+    } on AuthException catch(error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+         SnackBar(
+          content: Text(error.toString()),
+        ),
+      );
+    }
   }
 
   @override

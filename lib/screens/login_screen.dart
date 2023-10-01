@@ -1,9 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../config/colors.dart';
 import '../config/typography.dart';
+import '../exceptions/auth_exception.dart';
 import '../models/providers/auth_provider.dart';
 import 'signup_screen.dart';
 import 'verify_email_screen.dart';
@@ -24,41 +24,32 @@ class _LoginScreenState extends State<LoginScreen> {
   };
 
   void login() async {
-    final isValid = _formKey.currentState!.validate();
-    var haveError = false;
-    if (!isValid) {
-      return;
-    }
+    try {
+      final isValid = _formKey.currentState!.validate();
 
-    _formKey.currentState!.save();
-
-    if (_authData['email'] == null && _authData['password'] == null) {
-      return;
-    }
-    await Provider.of<AuthProvider>(context, listen: false)
-        .login(
-      email: _authData['email']!,
-      password: _authData['password']!,
-      showErrorSnackbar: (error) {
-        if (error.isEmpty) {
-          haveError = false;
-        }
-        // This is used for checking if error is empty then calling haveError to false.
-        else {
-          haveError = true;
-          String errorMessage = error.replaceAll(RegExp(r'\[[^\]]*\]'),
-              ''); // This is used for removing [] and its internal content.
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(errorMessage)),
-          ); // For showing the error using a snackbar.
-        }
-      },
-    )
-        .then((_) {
-      if (!haveError) {
-        Navigator.of(context).pushReplacementNamed(VerifyEmailScreen.routeName);
+      if (!isValid) {
+        return;
       }
-    }); // making sure that if there is no error then we can move to the verify_email_screen.
+
+      _formKey.currentState!.save();
+
+      if (_authData['email'] == null && _authData['password'] == null) {
+        return;
+      }
+      await Provider.of<AuthProvider>(context, listen: false)
+          .login(
+            email: _authData['email']!,
+            password: _authData['password']!,
+          )
+          .then((value) => Navigator.of(context)
+              .pushReplacementNamed(VerifyEmailScreen.routeName));
+    } on AuthException catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error.toString()),
+        ),
+      );
+    }
   }
 
   @override

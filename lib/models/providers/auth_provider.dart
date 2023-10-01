@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 
+import '../../exceptions/auth_exception.dart';
 import '../user.dart';
 
 class AuthProvider {
@@ -21,33 +22,37 @@ class AuthProvider {
     return _firebaseAuth.authStateChanges().map(_userFromFirebase);
   } // This is used to get the user state if the user is logged in or signed up or signed out.
 
-  Future<User?> signUp(
-      {required String email,
-      required String name,
-      required String password,
-      required Function(String) showErrorSnackbar}) async {
+  Future<User?> signUp({
+    required String email,
+    required String name,
+    required String password,
+  }) async {
     try {
       final credential = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
-      credential.user!.updateDisplayName(name);
+      if (credential.user == null) {
+        return null;
+      }
+      credential.user?.updateDisplayName(name);
       return _userFromFirebase(credential.user);
     } catch (error) {
-      showErrorSnackbar(error.toString());
+      AuthException(error.toString());
     }
     return null;
-  } //  This is used to signup the user to firebase using the firebase
+  }
+  //  This is used to signup the user to firebase using the firebase
 
-  Future<User?> login(
-      {required String email,
-      required String password,
-      required Function(String) showErrorSnackbar}) async {
+  Future<User?> login({
+    required String email,
+    required String password,
+  }) async {
     try {
       final credential = await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
 
       return _userFromFirebase(credential.user);
     } catch (error) {
-      showErrorSnackbar(error.toString());
+      AuthException(error.toString());
     }
     return null;
   } // this is used to log the user into the application
@@ -62,7 +67,7 @@ class AuthProvider {
     try {
       await user.sendEmailVerification();
     } catch (error) {
-      showErrorSnackbar(error.toString());
+      AuthException(error.toString());
     }
   } //  Sending email verification to the user in order to make sure they actually own the email.
 
@@ -71,8 +76,8 @@ class AuthProvider {
       required Function(String) showErrorSnackbar}) async {
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
-    } catch (e) {
-      showErrorSnackbar(e.toString());
+    } catch (error) {
+      AuthException(error.toString());
     }
   } // This is for checking if the user has forgotten password.
 }
