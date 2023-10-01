@@ -1,10 +1,11 @@
-import 'package:app_book/exceptions/auth_exception.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../config/colors.dart';
 import '../config/typography.dart';
-import '../models/providers/auth_provider.dart';
+import '../models/auth_result_status.dart';
+import '../services/auth_exception_handler.dart';
+import '../services/auth_provider.dart';
 import 'login_screen.dart';
 import 'verify_email_screen.dart';
 
@@ -19,32 +20,46 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   final _authData = {'email': '', 'password': '', 'username': ''};
   final _formKey = GlobalKey<FormState>(); // This is for validating
-  void register() async {
-    try {
-      final isValid = _formKey.currentState!.validate();
-      if (!isValid) {
-        return;
-      }
-      _formKey.currentState!.save();
-      if (_authData['password'] == null &&
-          _authData['email'] == null &&
-          _authData['username'] == null) {
-        return;
-      }
-      await Provider.of<AuthProvider>(context, listen: false)
-          .signUp(
-            email: _authData['email']!,
-            name: _authData['username']!,
-            password: _authData['password']!,
-          )
-          .then((value) => Navigator.of(context)
-              .pushReplacementNamed(VerifyEmailScreen.routeName));
-    } on AuthException catch(error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-         SnackBar(
-          content: Text(error.toString()),
-        ),
-      );
+
+  _showAlertDialog(errorMsg) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text(
+              'Login Failed',
+              style: TextStyle(color: Colors.black),
+            ),
+            content: Text(errorMsg),
+          );
+        });
+  }
+
+  void register(BuildContext ctx) async {
+    final isValid = _formKey.currentState!.validate();
+
+    if (!isValid) {
+      return;
+    }
+
+    _formKey.currentState!.save();
+
+    if (_authData['password'] == null &&
+        _authData['email'] == null &&
+        _authData['username'] == null) {
+      return;
+    }
+
+    final status =
+        await Provider.of<AuthProvider>(context, listen: false).createAccount(
+      email: _authData['email']!,
+      pass: _authData['password']!,
+    );
+    if (status == AuthResultStatus.successful) {
+      Navigator.of(ctx).pushReplacementNamed(VerifyEmailScreen.routeName);
+    } else {
+      final errorMsg = AuthExceptionHandler.generateExceptionMessage(status);
+      _showAlertDialog(errorMsg);
     }
   }
 
@@ -221,7 +236,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                     backgroundColor: primaryColor,
                                     textStyle: primaryLabel),
                                 onPressed: () {
-                                  register();
+                                  register(context);
                                 },
                                 child: const Text('Sign up'),
                               ),

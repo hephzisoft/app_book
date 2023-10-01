@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../config/colors.dart';
 
-import '../models/providers/auth_provider.dart';
+import '../services/auth_provider.dart';
 import 'free_books_screen.dart';
 import 'login_screen.dart';
 import 'paid_books_screen.dart';

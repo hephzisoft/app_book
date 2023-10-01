@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../config/colors.dart';
-import '../models/providers/auth_provider.dart';
+import '../services/auth_provider.dart';
 
 import 'login_screen.dart';
 import 'tab_screen.dart';
@@ -24,29 +24,30 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
   final user = FirebaseAuth.instance.currentUser;
   Timer? timer;
 
-  @override
-  void initState() {
-    if (user == null) {
-      Navigator.of(context).pushNamed(LoginScreen.routeName);
-    }
-    isEmailVerified = user!.emailVerified;
-    if (!isEmailVerified) {
-      Provider.of<AuthProvider>(context, listen: false).sendEmailVerification(
-        user: user!,
-        showErrorSnackbar: (error) {
-          String errorMessage = error.replaceAll(RegExp(r'\[[^\]]*\]'), '');
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(errorMessage)),
-          );
-        },
-      );
-      timer = Timer.periodic(
-        const Duration(seconds: 4),
-        (timer) => checkEmailVerified(),
-      );
-    }
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   if (user == null) {
+  //     print('User is null');
+  //     // Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+  //   }
+  //   isEmailVerified = user!.emailVerified;
+  //   if (!isEmailVerified) {
+  //     Provider.of<AuthProvider>(context, listen: false).sendEmailVerification(
+  //       user: user!,
+  //       showErrorSnackbar: (error) {
+  //         String errorMessage = error.replaceAll(RegExp(r'\[[^\]]*\]'), '');
+  //         ScaffoldMessenger.of(context).showSnackBar(
+  //           SnackBar(content: Text(errorMessage)),
+  //         );
+  //       },
+  //     );
+  //     timer = Timer.periodic(
+  //       const Duration(seconds: 4),
+  //       (timer) => checkEmailVerified(),
+  //     );
+  //   }
+  //   super.initState();
+  // }
 
   @override
   void dispose() {

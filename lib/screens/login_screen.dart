@@ -3,8 +3,9 @@ import 'package:provider/provider.dart';
 
 import '../config/colors.dart';
 import '../config/typography.dart';
-import '../exceptions/auth_exception.dart';
-import '../models/providers/auth_provider.dart';
+import '../models/auth_result_status.dart';
+import '../services/auth_exception_handler.dart';
+import '../services/auth_provider.dart';
 import 'signup_screen.dart';
 import 'verify_email_screen.dart';
 
@@ -22,35 +23,78 @@ class _LoginScreenState extends State<LoginScreen> {
     'email': '',
     'password': '',
   };
+  _showAlertDialog(errorMsg) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text(
+              'Login Failed',
+              style: TextStyle(color: Colors.black),
+            ),
+            content: Text(errorMsg),
+          );
+        });
+  }
 
-  void login() async {
-    try {
-      final isValid = _formKey.currentState!.validate();
+  void login(BuildContext ctx) async {
+    final isValid = _formKey.currentState!.validate();
 
-      if (!isValid) {
-        return;
-      }
+    if (!isValid) {
+      return;
+    }
 
-      _formKey.currentState!.save();
+    _formKey.currentState!.save();
 
-      if (_authData['email'] == null && _authData['password'] == null) {
-        return;
-      }
-      await Provider.of<AuthProvider>(context, listen: false)
-          .login(
-            email: _authData['email']!,
-            password: _authData['password']!,
-          )
-          .then((value) => Navigator.of(context)
-              .pushReplacementNamed(VerifyEmailScreen.routeName));
-    } on AuthException catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(error.toString()),
-        ),
-      );
+    if (_authData['password'] == null && _authData['email'] == null) {
+      return;
+    }
+
+    final status =
+        await Provider.of<AuthProvider>(context, listen: false).login(
+      email: _authData['email']!,
+      pass: _authData['password']!,
+    );
+    if (status == AuthResultStatus.successful) {
+      Navigator.of(ctx).pushReplacementNamed(VerifyEmailScreen.routeName);
+    } else {
+      final errorMsg = AuthExceptionHandler.generateExceptionMessage(status);
+      _showAlertDialog(errorMsg);
     }
   }
+  // void showSnackBar(String message) {
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       content: Text(message),
+  //     ),
+  //   );
+  // }
+
+  // void login() async {
+  //   try {
+  //     final isValid = _formKey.currentState!.validate();
+
+  //     if (!isValid) {
+  //       return;
+  //     }
+
+  //     _formKey.currentState!.save();
+
+  //     if (_authData['email'] == null && _authData['password'] == null) {
+  //       return;
+  //     }
+  //     await Provider.of<AuthProvider>(context, listen: false)
+  //         .login(
+  //           email: _authData['email']!,
+  //           password: _authData['password']!,
+  //         )
+  //         .then((value) => Navigator.of(context)
+  //             .pushReplacementNamed(VerifyEmailScreen.routeName));
+  //   } on FirebaseAuthException catch (error) {
+  //     pri
+  //     // showSnackBar(error.toString());
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -201,7 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     backgroundColor: primaryColor,
                                     textStyle: primaryLabel),
                                 onPressed: () {
-                                  login();
+                                  login(context);
                                 },
                                 child: const Text('Log in'),
                               ),

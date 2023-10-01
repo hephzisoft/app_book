@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../config/colors.dart';
 import '../models/books.dart';
-import '../models/providers/book_providers.dart';
+import '../services/book_providers.dart';
 
 class PaidBooks extends StatefulWidget {
   const PaidBooks({

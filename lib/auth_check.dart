@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'models/providers/auth_provider.dart';
+import 'services/auth_provider.dart';
 import 'models/user.dart';
 // import 'screens/login_screen.dart';
 import 'screens/splash_screen.dart';
