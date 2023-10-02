@@ -14,7 +14,7 @@ class AuthProvider {
     return User(
       uid: user.uid,
       email: user.email!,
-      name: user.displayName!,
+      // name: user.displayName as String,
     );
   }
 
@@ -28,17 +28,16 @@ class AuthProvider {
   /// Helper Functions
   ///
 
-  Future<AuthResultStatus> createAccount({email, pass}) async {
+  Future<AuthResultStatus> createAccount({email, pass, name}) async {
     try {
       final authResult = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: pass);
       if (authResult.user != null) {
+        _userFromFirebase(authResult.user);
+        // authResult.user?.updateDisplayName(name);
         _status = AuthResultStatus.successful;
-      } else {
-        _status = AuthResultStatus.undefined;
       }
-    } catch (e) {
-      print('Exception @createAccount: $e');
+    } on auth.FirebaseAuthException catch (e) {
       _status = AuthExceptionHandler.handleException(e);
     }
     return _status!;
@@ -50,12 +49,10 @@ class AuthProvider {
           email: email, password: pass);
 
       if (authResult.user != null) {
+        _userFromFirebase(authResult.user);
         _status = AuthResultStatus.successful;
-      } else {
-        _status = AuthResultStatus.undefined;
       }
     } catch (e) {
-      print('Exception @createAccount: $e');
       _status = AuthExceptionHandler.handleException(e);
     }
     return _status!;

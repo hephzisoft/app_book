@@ -50,11 +50,11 @@ class _SignupScreenState extends State<SignupScreen> {
       return;
     }
 
-    final status =
-        await Provider.of<AuthProvider>(context, listen: false).createAccount(
-      email: _authData['email']!,
-      pass: _authData['password']!,
-    );
+    final status = await Provider.of<AuthProvider>(context, listen: false)
+        .createAccount(
+            email: _authData['email']!,
+            pass: _authData['password']!,
+            name: _authData['username']!);
     if (status == AuthResultStatus.successful) {
       Navigator.of(ctx).pushReplacementNamed(VerifyEmailScreen.routeName);
     } else {

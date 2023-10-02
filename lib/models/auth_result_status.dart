@@ -8,4 +8,5 @@ enum AuthResultStatus {
   operationNotAllowed,
   tooManyRequests,
   undefined,
+  weakPassword
 }
