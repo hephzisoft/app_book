@@ -8,17 +8,27 @@ import 'package:uuid/uuid.dart';
 import '../models/books.dart';
 
 class BookProvider extends ChangeNotifier {
-  List<Books> _allBooks = const [];
+  final String userId;
+  List<Books> _allBooks = [];
+
+  BookProvider(this.userId, this._allBooks);
 
   List<Books> get book {
     return [..._allBooks];
   }
 
   Future<void> loadAllBooks() async {
+  
     try {
       final url = Uri.parse(
           'https://appbook-1e0d2-default-rtdb.firebaseio.com/books.json');
       final response = await http.get(url);
+
+      // var urf = Uri.parse(
+      //     'https://appbook-1e0d2-default-rtdb.firebaseio.com/userFavorites/$userId/$userId.json');
+      // final favResponse = await http.get(urf);
+      // final favoriteData = json.decode(favResponse.body);
+      // print(favoriteData);
       final extractedData = json.decode(response.body);
 
       final List<Books> loadedBooks = [];
@@ -31,6 +41,7 @@ class BookProvider extends ChangeNotifier {
             author: book['author'],
             isPaid: book['isPaid'],
             content: book['link'],
+            // isFavorite: favoriteData == null ? false : favoriteData.to ?? false,
             synopsis: book['synopsis'],
             imageUrl: book['imageUrl']));
       }
@@ -53,5 +64,7 @@ class BookProvider extends ChangeNotifier {
     return _allBooks.where((book) => book.isPaid == true).toList();
   }
 
- 
+  List<Books> get shpwFavoriteBooks {
+    return _allBooks.where((book) => book.isFavorite == true).toList();
+  }
 }

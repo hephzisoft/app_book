@@ -64,8 +64,6 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
       isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
     });
     if (isEmailVerified) {
-      FirebaseAuth.instance.currentUser!.getIdToken().then((value) =>
-          Navigator.of(context).pushReplacementNamed(TabScreen.routeName));
       timer?.cancel();
     }
   }
@@ -75,101 +73,103 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
     final email = user?.email;
     final size = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            height: size * 0.4,
-            decoration: const BoxDecoration(
-                color: primaryColor,
-                borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(20),
-                    bottomLeft: Radius.circular(20))),
-            width: double.infinity,
-            child: Image.asset('assets/images/email.png'),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 20),
-            padding: const EdgeInsets.all(20),
-            height: size * 0.38,
-            child: Column(
+      body: isEmailVerified
+          ? const TabScreen()
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  'We have sent you an email',
-                  style: GoogleFonts.montserrat(
-                      fontSize: 22, fontWeight: FontWeight.bold),
+                Container(
+                  height: size * 0.4,
+                  decoration: const BoxDecoration(
+                      color: primaryColor,
+                      borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(20),
+                          bottomLeft: Radius.circular(20))),
+                  width: double.infinity,
+                  child: Image.asset('assets/images/email.png'),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                SizedBox(
-                  child: Text(
-                    'Click on the email verrification link sent to you on $email.',
-                    style: GoogleFonts.montserrat(fontSize: 17),
-                    softWrap: true,
-                    textAlign: TextAlign.center,
+                Container(
+                  margin: const EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.all(20),
+                  height: size * 0.38,
+                  child: Column(
+                    children: [
+                      Text(
+                        'We have sent you an email',
+                        style: GoogleFonts.montserrat(
+                            fontSize: 22, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      SizedBox(
+                        child: Text(
+                          'Click on the email verrification link sent to you on $email.',
+                          style: GoogleFonts.montserrat(fontSize: 17),
+                          softWrap: true,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Didn\'t recieve the email yet?',
+                              style: GoogleFonts.montserrat(
+                                  fontSize: 16, fontWeight: FontWeight.w500)),
+                          TextButton(
+                            onPressed: () {
+                              Provider.of<AuthProvider>(context, listen: false)
+                                  .sendEmailVerification(
+                                user: user!,
+                                showErrorSnackbar: (error) {
+                                  String errorMessage = error.replaceAll(
+                                      RegExp(r'\[[^\]]*\]'), '');
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(errorMessage)),
+                                  );
+                                },
+                              );
+                            },
+                            child: Text('Resend it',
+                                style: GoogleFonts.montserrat(
+                                    fontSize: 16, fontWeight: FontWeight.w500)),
+                          )
+                        ],
+                      )
+                    ],
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Didn\'t recieve the email yet?',
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      FilledButton(
+                        style: FilledButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 30, vertical: 20)),
+                        onPressed: () {},
+                        child: Text('Open Email App',
+                            style: GoogleFonts.montserrat(
+                                fontSize: 17, fontWeight: FontWeight.bold)),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        'Note: Please check spam folder if you could not find the mail.',
+                        softWrap: true,
+                        textAlign: TextAlign.center,
                         style: GoogleFonts.montserrat(
-                            fontSize: 16, fontWeight: FontWeight.w500)),
-                    TextButton(
-                      onPressed: () {
-                        Provider.of<AuthProvider>(context, listen: false)
-                            .sendEmailVerification(
-                          user: user!,
-                          showErrorSnackbar: (error) {
-                            String errorMessage =
-                                error.replaceAll(RegExp(r'\[[^\]]*\]'), '');
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(errorMessage)),
-                            );
-                          },
-                        );
-                      },
-                      child: Text('Resend it',
-                          style: GoogleFonts.montserrat(
-                              fontSize: 16, fontWeight: FontWeight.w500)),
-                    )
-                  ],
+                            fontSize: 16, fontWeight: FontWeight.w500),
+                      )
+                    ],
+                  ),
                 )
               ],
             ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                FilledButton(
-                  style: FilledButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 20)),
-                  onPressed: () {},
-                  child: Text('Open Email App',
-                      style: GoogleFonts.montserrat(
-                          fontSize: 17, fontWeight: FontWeight.bold)),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  'Note: Please check spam folder if you could not find the mail.',
-                  softWrap: true,
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.montserrat(
-                      fontSize: 16, fontWeight: FontWeight.w500),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
     );
   }
 }

@@ -31,10 +31,14 @@ class App extends StatelessWidget {
         Provider<AuthProvider>(
           create: (context) => AuthProvider(),
         ),
-        ChangeNotifierProvider<BookProvider>(
-          create: (context) => BookProvider(),
+        ChangeNotifierProxyProvider<AuthProvider, BookProvider>(
+          create: (context) => BookProvider('', []),
+          update: (context, auth, previousBookProvider) => BookProvider(
+              auth.user == null ? '' : auth.userId!,
+              previousBookProvider == null ? [] : previousBookProvider.book),
         ),
       ],
+      
       child: MaterialApp(
         themeMode: ThemeMode.system,
         debugShowCheckedModeBanner: false,

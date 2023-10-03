@@ -5,17 +5,16 @@ import '../models/user.dart';
 import 'auth_exception_handler.dart';
 
 class AuthProvider {
+  String? userId;
   final _firebaseAuth = auth.FirebaseAuth.instance;
 
   User? _userFromFirebase(auth.User? user) {
     if (user == null) {
       return null;
     }
-    return User(
-      uid: user.uid,
-      email: user.email!,
-      // name: user.displayName as String,
-    );
+    return User(uid: user.uid, email: user.email!, name: user.displayName!
+        // name: user.displayName as String,
+        );
   }
 
   Stream<User?>? get user {
@@ -34,7 +33,8 @@ class AuthProvider {
           email: email, password: pass);
       if (authResult.user != null) {
         _userFromFirebase(authResult.user);
-        // authResult.user?.updateDisplayName(name);
+        userId = authResult.user?.uid;
+        authResult.user?.updateDisplayName(name);
         _status = AuthResultStatus.successful;
       }
     } on auth.FirebaseAuthException catch (e) {
@@ -49,6 +49,7 @@ class AuthProvider {
           email: email, password: pass);
 
       if (authResult.user != null) {
+        userId = authResult.user?.uid;
         _userFromFirebase(authResult.user);
         _status = AuthResultStatus.successful;
       }
@@ -73,11 +74,13 @@ class AuthProvider {
     return _status!;
   } //  Sending email verification to the user in order to make sure they actually own the email.
 
-  // Future<void> passwordReset(
-  //     {required String email,
-  //     required Function(String) showErrorSnackbar}) async {
-  //   try {
-  //     await _firebaseAuth.sendPasswordResetEmail(email: email);
-  //   } on auth.FirebaseAuthException {}
-  // }
+  Future<void> passwordReset(
+      {required String email,
+      required Function(String) showErrorSnackbar}) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+    } on auth.FirebaseAuthException {
+      //
+    }
+  }
 }

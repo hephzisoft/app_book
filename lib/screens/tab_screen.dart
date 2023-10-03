@@ -41,7 +41,10 @@ class _TabScreenState extends State<TabScreen> {
         elevation: 0,
         actions: [
           IconButton(
-            icon: const Icon(Icons.exit_to_app),
+            icon: const Icon(
+              Icons.exit_to_app,
+              color: Colors.white,
+            ),
             onPressed: () async {
               await Provider.of<AuthProvider>(context, listen: false)
                   .signOut()
