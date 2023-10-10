@@ -1,3 +1,4 @@
+import 'package:app_book/screens/book_details_screen.dart';
 import 'package:app_book/widgets/book_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -54,86 +55,91 @@ class _PaidBooksState extends State<PaidBooks> {
     _filterBooks();
 
     return Scaffold(
-        body: SingleChildScrollView(
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            height: size * 0.25,
-            decoration: const BoxDecoration(
-              color: primaryColor,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(35),
-                bottomRight: Radius.circular(35),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              height: size * 0.25,
+              decoration: const BoxDecoration(
+                color: primaryColor,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(35),
+                  bottomRight: Radius.circular(35),
+                ),
+              ),
+              child: Center(
+                child: SearchBar(
+                  padding: MaterialStateProperty.all(
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  ),
+                  leading: const Icon(IconlyLight.search),
+                  hintStyle: MaterialStateProperty.all(
+                      GoogleFonts.poppins(fontSize: 18)),
+                  textStyle: MaterialStateProperty.all(
+                      GoogleFonts.poppins(fontSize: 18)),
+                  hintText: 'Search Paid Books',
+                  onChanged: (value) {
+                    setState(() {
+                      _searchQuery = value;
+                      _filterBooks();
+                    });
+                  },
+                  constraints:
+                      const BoxConstraints(minHeight: 50, maxWidth: 400),
+                ),
               ),
             ),
-            child: Center(
-              child: SearchBar(
-                padding: MaterialStateProperty.all(
-                  const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                ),
-                leading: const Icon(IconlyLight.search),
-                hintStyle: MaterialStateProperty.all(
-                    GoogleFonts.poppins(fontSize: 18)),
-                textStyle: MaterialStateProperty.all(
-                    GoogleFonts.poppins(fontSize: 18)),
-                hintText: 'Search Paid Books',
-                onChanged: (value) {
-                  setState(() {
-                    _searchQuery = value;
-                    _filterBooks();
-                  });
-                },
-                constraints: const BoxConstraints(minHeight: 50, maxWidth: 400),
-              ),
+            SizedBox(
+              height: size * 0.05,
             ),
-          ),
-          SizedBox(
-            height: size * 0.05,
-          ),
-          Container(
-            height: size * 0.5,
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Paid Books',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Expanded(
-                  child: _isLoading
-                      ? const Center(
-                          child: CupertinoActivityIndicator(),
-                        )
-                      : RefreshIndicator(
-                          onRefresh: () => _refreshBooks(context),
-                          child: GridView.builder(
-                            itemCount: _filteredBooks.length,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              childAspectRatio: 5 / 7,
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 40,
+            Container(
+              height: size * 0.5,
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Paid Books',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Expanded(
+                    child: _isLoading
+                        ? const Center(
+                            child: CupertinoActivityIndicator(),
+                          )
+                        : RefreshIndicator(
+                            onRefresh: () => _refreshBooks(context),
+                            child: GridView.builder(
+                              itemCount: _filteredBooks.length,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 5 / 7,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 40,
+                              ),
+                              itemBuilder: (context, index) {
+                                return ChangeNotifierProvider.value(
+                                  value: _filteredBooks[index],
+                                  child: BookImage(
+                                    url: _filteredBooks[index].imageUrl,
+                                    id: _filteredBooks[index].id,
+                                  ),
+                                );
+                              },
                             ),
-                            itemBuilder: (BuildContext context, int index) {
-                              return BookImage(
-                                url: _filteredBooks[index].imageUrl,
-                                id: _filteredBooks[index].id,
-                              );
-                            },
                           ),
-                        ),
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ));
+    );
   }
 }

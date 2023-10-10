@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../config/colors.dart';
+import '../models/books.dart';
+import '../services/auth_provider.dart';
 import '../services/book_providers.dart';
 
 class BookDetailsScreen extends StatelessWidget {
@@ -14,11 +16,18 @@ class BookDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final id = ModalRoute.of(context)?.settings.arguments as String;
+    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    final book =  args['provider'];
+    print(args['id']);
     final bookDetails =
-        Provider.of<BookProvider>(context, listen: false).findById(id);
+        Provider.of<BookProvider>(context, listen: false).findById(args['id'] as String);
+    final authData  =  Provider.of<AuthProvider>(context).userId;
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: primaryColor,
+        foregroundColor: Colors.white,
+      ),
       body: LayoutBuilder(builder: (ctx, constraints) {
         return Column(children: [
           Container(
@@ -91,13 +100,15 @@ class BookDetailsScreen extends StatelessWidget {
                     width: 10,
                   ),
                   Expanded(
-                    child: IconButton(
-                      icon: Icon(bookDetails.isFavorite
-                          ? CupertinoIcons.heart_fill
-                          : CupertinoIcons.heart),
-                      onPressed: () {
-                     
-                      },
+                    child: Consumer<Books>(
+                      builder: (context, book, _) => IconButton(
+                        icon: Icon(bookDetails.isFavorite
+                            ? CupertinoIcons.heart_fill
+                            : CupertinoIcons.heart),
+                        onPressed: () {
+                          book.toggleFavoriteStatus(authData!, bookDetails.id);
+                        },
+                      ),
                     ),
                   ),
                   const SizedBox(

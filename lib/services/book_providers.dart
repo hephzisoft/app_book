@@ -8,47 +8,41 @@ import 'package:uuid/uuid.dart';
 import '../models/books.dart';
 
 class BookProvider extends ChangeNotifier {
+  BookProvider(this.userId, this._allBooks);
   final String userId;
   List<Books> _allBooks = [];
 
-  BookProvider(this.userId, this._allBooks);
+  // BookProvider(this.userId, this._allBooks);
 
   List<Books> get book {
     return [..._allBooks];
   }
 
   Future<void> loadAllBooks() async {
-  
     try {
       final url = Uri.parse(
           'https://appbook-1e0d2-default-rtdb.firebaseio.com/books.json');
       final response = await http.get(url);
 
-      // var urf = Uri.parse(
-      //     'https://appbook-1e0d2-default-rtdb.firebaseio.com/userFavorites/$userId/$userId.json');
-      // final favResponse = await http.get(urf);
-      // final favoriteData = json.decode(favResponse.body);
-      // print(favoriteData);
-      final extractedData = json.decode(response.body);
-
+      final extractedData = json.decode(response.body) as List<dynamic>;
       final List<Books> loadedBooks = [];
-
       for (var book in extractedData) {
-        var uuid = const Uuid().v4();
-        loadedBooks.add(Books(
-            id: uuid,
-            title: book['title'],
-            author: book['author'],
-            isPaid: book['isPaid'],
-            content: book['link'],
-            // isFavorite: favoriteData == null ? false : favoriteData.to ?? false,
-            synopsis: book['synopsis'],
-            imageUrl: book['imageUrl']));
+        final books = Books(
+          id: book['bookId'],
+          title: book['title'],
+          author: book['author'],
+          isPaid: book['isPaid'],
+          content: book['link'],
+          synopsis: book['synopsis'],
+          imageUrl: book['imageUrl'],
+        );
+
+        loadedBooks.add(books);
       }
 
       _allBooks = loadedBooks;
     } catch (error) {
-      log(error.toString());
+      print(error);
     }
   }
 

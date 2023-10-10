@@ -50,6 +50,9 @@ class _FreeBooksState extends State<FreeBooks> {
             .toList();
   }
 
+
+  
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size.height;
@@ -124,9 +127,12 @@ class _FreeBooksState extends State<FreeBooks> {
                                 mainAxisSpacing: 40,
                               ),
                               itemBuilder: (BuildContext context, int index) {
-                                return BookImage(
-                                  url: _filteredBooks[index].imageUrl,
-                                  id: _filteredBooks[index].id,
+                                return ChangeNotifierProvider.value(
+                                  value: _filteredBooks[index],
+                                  child: BookImage(
+                                    url: _filteredBooks[index].imageUrl,
+                                    id: _filteredBooks[index].id,
+                                  ),
                                 );
                               },
                             ),

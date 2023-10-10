@@ -28,13 +28,13 @@ class Books with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> toggleFavoriteStatus(String userId) async {
+  Future<void> toggleFavoriteStatus(String userId, String bookId) async {
     final oldStatus = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
     try {
       final url = Uri.parse(
-          'https://appbook-1e0d2-default-rtdb.firebaseio.com/userFavorites/$userId/$id.json');
+          'https://appbook-1e0d2-default-rtdb.firebaseio.com/userFavorites/$userId/$bookId.json');
       final response = await http.put(
         url,
         body: json.encode(isFavorite),
