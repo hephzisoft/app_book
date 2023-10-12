@@ -13,7 +13,7 @@ class AuthProvider {
       return null;
     }
     _userId = user.uid;
-    return User(uid: user.uid, email: user.email!, name: user.displayName!
+    return User(uid: user.uid, email: user.email!, name: user.displayName ?? ''
         // name: user.displayName as String,
         );
   }

@@ -15,13 +15,12 @@ class BookImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bookProvider = Provider.of<Books>(context);
     return SizedBox(
       width: double.infinity,
       child: InkWell(
         onTap: () {
           Navigator.of(context).pushNamed(BookDetailsScreen.routeName,
-              arguments: {'id': id, 'provider': bookProvider});
+              arguments: id);
         },
         child: Image.network(
           url,

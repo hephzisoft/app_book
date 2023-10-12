@@ -1,10 +1,8 @@
 import 'dart:convert';
-import 'dart:developer';
 // import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:uuid/uuid.dart';
 import '../models/books.dart';
 
 class BookProvider extends ChangeNotifier {

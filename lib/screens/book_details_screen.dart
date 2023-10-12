@@ -16,12 +16,11 @@ class BookDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-    final book =  args['provider'];
-    print(args['id']);
+    final id = ModalRoute.of(context)?.settings.arguments as String;
+
     final bookDetails =
-        Provider.of<BookProvider>(context, listen: false).findById(args['id'] as String);
-    final authData  =  Provider.of<AuthProvider>(context).userId;
+        Provider.of<BookProvider>(context, listen: false).findById(id);
+    final authData = Provider.of<AuthProvider>(context).userId;
 
     return Scaffold(
       appBar: AppBar(
@@ -100,14 +99,22 @@ class BookDetailsScreen extends StatelessWidget {
                     width: 10,
                   ),
                   Expanded(
-                    child: Consumer<Books>(
-                      builder: (context, book, _) => IconButton(
-                        icon: Icon(bookDetails.isFavorite
-                            ? CupertinoIcons.heart_fill
-                            : CupertinoIcons.heart),
-                        onPressed: () {
-                          book.toggleFavoriteStatus(authData!, bookDetails.id);
-                        },
+                    child: ChangeNotifierProvider.value(
+                      value: bookDetails,
+                      builder: (context, child) => Consumer<Books>(
+                        builder: (context, book, _) => IconButton(
+                          icon: Icon(
+                            book.isFavorite
+                                ? CupertinoIcons.heart_fill
+                                : CupertinoIcons.heart,
+                            color: primaryColor,
+                          ),
+                          onPressed: () {
+                            book.toggleFavoriteStatus(
+                                authData!, bookDetails.id);
+                            // book.toggleFavoriteStatus(authData!, bookDetails.id);
+                          },
+                        ),
                       ),
                     ),
                   ),
