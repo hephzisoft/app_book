@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../models/books.dart';
+
 import '../screens/book_details_screen.dart';
 
 class BookImage extends StatelessWidget {
