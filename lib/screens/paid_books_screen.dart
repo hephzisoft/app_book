@@ -1,4 +1,3 @@
-import 'package:app_book/screens/book_details_screen.dart';
 import 'package:app_book/widgets/book_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -123,12 +122,9 @@ class _PaidBooksState extends State<PaidBooks> {
                                 mainAxisSpacing: 40,
                               ),
                               itemBuilder: (context, index) {
-                                return ChangeNotifierProvider.value(
-                                  value: _filteredBooks[index],
-                                  child: BookImage(
-                                    url: _filteredBooks[index].imageUrl,
-                                    id: _filteredBooks[index].id,
-                                  ),
+                                return BookImage(
+                                  url: _filteredBooks[index].imageUrl,
+                                  id: _filteredBooks[index].id,
                                 );
                               },
                             ),
