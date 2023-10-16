@@ -28,6 +28,8 @@ class AuthExceptionHandler {
         break;
       case "weak-password":
         status = AuthResultStatus.weakPassword;
+        break;case "INVALID_LOGIN_CREDENTIAL":
+        status = AuthResultStatus.weakPassword;
         break;
       default:
         status = AuthResultStatus.undefined;
@@ -43,6 +45,7 @@ class AuthExceptionHandler {
     switch (exceptionCode) {
       case AuthResultStatus.invalidEmail:
         errorMessage = "Your email address appears to be malformed.";
+
         break;
       case AuthResultStatus.wrongPassword:
         errorMessage = "Your password is wrong.";

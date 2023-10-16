@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 // import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -18,19 +19,31 @@ class BookProvider extends ChangeNotifier {
 
   Future<void> loadAllBooks() async {
     try {
-      final url = Uri.parse(
+      var url = Uri.parse(
           'https://appbook-1e0d2-default-rtdb.firebaseio.com/books.json');
+
       final response = await http.get(url);
+
+      url = Uri.parse(
+          'https://appbook-1e0d2-default-rtdb.firebaseio.com/userFavorites/$userId.json');
+      final favStatus = await http.get(url);
+
+      final favoriteData = json.decode(favStatus.body) as Map<String, dynamic>;
 
       final extractedData = json.decode(response.body) as List<dynamic>;
       final List<Books> loadedBooks = [];
       for (var book in extractedData) {
+        final bookId = book['bookId'];
+
+        // print(book);
+
         final books = Books(
-          id: book['bookId'],
+          id: bookId,
           title: book['title'],
           author: book['author'],
           isPaid: book['isPaid'],
           content: book['link'],
+          isFavorite: favoriteData[bookId] ?? false,
           synopsis: book['synopsis'],
           imageUrl: book['imageUrl'],
         );
@@ -40,7 +53,7 @@ class BookProvider extends ChangeNotifier {
 
       _allBooks = loadedBooks;
     } catch (error) {
-      print(error);
+      throw HttpException(error.toString());
     }
   }
 
@@ -56,7 +69,7 @@ class BookProvider extends ChangeNotifier {
     return _allBooks.where((book) => book.isPaid == true).toList();
   }
 
-  List<Books> get shpwFavoriteBooks {
+  List<Books> get showFavoriteBooks {
     return _allBooks.where((book) => book.isFavorite == true).toList();
   }
 }

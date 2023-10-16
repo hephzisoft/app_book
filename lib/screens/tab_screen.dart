@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../config/colors.dart';
 
 import '../services/auth_provider.dart';
+import 'favorite_book_screen.dart';
 import 'free_books_screen.dart';
 import 'login_screen.dart';
 import 'paid_books_screen.dart';
@@ -21,7 +22,7 @@ class _TabScreenState extends State<TabScreen> {
 
   @override
   void initState() {
-    _pages = [const FreeBooks(), const PaidBooks()];
+    _pages = [const FreeBooks(), const PaidBooks(), const FavoriteBooks()];
 
     super.initState();
   }
@@ -62,6 +63,7 @@ class _TabScreenState extends State<TabScreen> {
         items: const [
           BottomNavigationBarItem(icon: Icon(IconlyBold.home), label: ''),
           BottomNavigationBarItem(icon: Icon(IconlyBold.wallet), label: ''),
+          BottomNavigationBarItem(icon: Icon(IconlyBold.heart), label: ''),
         ],
       ),
     );
