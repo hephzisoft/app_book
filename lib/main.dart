@@ -26,13 +26,11 @@ void main() async {
 class App extends StatelessWidget {
   const App({super.key});
 
-
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<AuthProvider>(
+        ChangeNotifierProvider<AuthProvider>(
           create: (context) => AuthProvider(),
         ),
         ChangeNotifierProxyProvider<AuthProvider, BookProvider>(
@@ -41,7 +39,6 @@ class App extends StatelessWidget {
               auth.userId == null ? '' : auth.userId!,
               previousBookProvider == null ? [] : previousBookProvider.book),
         ),
-
       ],
       child: MaterialApp(
         themeMode: ThemeMode.system,

@@ -1,24 +1,24 @@
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:flutter/material.dart';
 
 import '../models/auth_result_status.dart';
 import '../models/user.dart';
 import 'auth_exception_handler.dart';
 
-class AuthProvider {
+class AuthProvider extends ChangeNotifier {
   final _firebaseAuth = auth.FirebaseAuth.instance;
-  String? _userId;
+
   User? _userFromFirebase(auth.User? user) {
     if (user == null) {
       return null;
     }
-    _userId = user.uid;
-    return User(uid: user.uid, email: user.email!, name: user.displayName ?? ''
-        // name: user.displayName as String,
-        );
+
+    return User(
+        uid: user.uid, email: user.email!, name: user.displayName ?? '');
   }
 
   String? get userId {
-    return _userId;
+    return _firebaseAuth.currentUser?.uid;
   }
 
   Stream<User?>? get user {
@@ -38,7 +38,9 @@ class AuthProvider {
       if (authResult.user != null) {
         _userFromFirebase(authResult.user);
         authResult.user?.updateDisplayName(name);
+
         _status = AuthResultStatus.successful;
+        notifyListeners();
       }
     } on auth.FirebaseAuthException catch (e) {
       _status = AuthExceptionHandler.handleException(e);
@@ -54,6 +56,7 @@ class AuthProvider {
       if (authResult.user != null) {
         _userFromFirebase(authResult.user);
         _status = AuthResultStatus.successful;
+        notifyListeners();
       }
     } on auth.FirebaseAuthException catch (e) {
       _status = AuthExceptionHandler.handleException(e);
@@ -62,7 +65,9 @@ class AuthProvider {
   }
 
   Future<void> signOut() async {
-    return await _firebaseAuth.signOut();
+    _userFromFirebase(null);
+    await _firebaseAuth.signOut();
+    notifyListeners();
   }
 
   Future<AuthResultStatus> sendEmailVerification(
@@ -81,8 +86,8 @@ class AuthProvider {
   }) async {
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
-    } on auth.FirebaseAuthException {
-      //
+    } on auth.FirebaseAuthException catch (error) {
+      throw AuthExceptionHandler.handleException(error);
     }
   }
 }

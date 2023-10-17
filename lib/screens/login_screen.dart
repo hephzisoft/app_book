@@ -37,6 +37,26 @@ class _LoginScreenState extends State<LoginScreen> {
         });
   }
 
+  void passwordReset() async {
+    try {
+      final isValid = _formKey.currentState!.validate();
+
+      if (!isValid) {
+        return;
+      }
+
+      _formKey.currentState!.save();
+
+      if (_authData['email'] == null) {
+        return;
+      }
+      await Provider.of<AuthProvider>(context)
+          .passwordReset(email: _authData['email']!);
+    } on AuthExceptionHandler catch (error) {
+      _showAlertDialog(error);
+    }
+  }
+
   void login(BuildContext ctx) async {
     final isValid = _formKey.currentState!.validate();
 
@@ -62,39 +82,6 @@ class _LoginScreenState extends State<LoginScreen> {
       _showAlertDialog(errorMsg);
     }
   }
-  // void showSnackBar(String message) {
-  //   ScaffoldMessenger.of(context).showSnackBar(
-  //     SnackBar(
-  //       content: Text(message),
-  //     ),
-  //   );
-  // }
-
-  // void login() async {
-  //   try {
-  //     final isValid = _formKey.currentState!.validate();
-
-  //     if (!isValid) {
-  //       return;
-  //     }
-
-  //     _formKey.currentState!.save();
-
-  //     if (_authData['email'] == null && _authData['password'] == null) {
-  //       return;
-  //     }
-  //     await Provider.of<AuthProvider>(context, listen: false)
-  //         .login(
-  //           email: _authData['email']!,
-  //           password: _authData['password']!,
-  //         )
-  //         .then((value) => Navigator.of(context)
-  //             .pushReplacementNamed(VerifyEmailScreen.routeName));
-  //   } on FirebaseAuthException catch (error) {
-  //     pri
-  //     // showSnackBar(error.toString());
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {

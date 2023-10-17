@@ -19,6 +19,7 @@ class BookProvider extends ChangeNotifier {
 
   Future<void> loadAllBooks() async {
     try {
+      print(userId);
       var url = Uri.parse(
           'https://appbook-1e0d2-default-rtdb.firebaseio.com/books.json');
 
